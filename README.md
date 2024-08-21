@@ -15,5 +15,31 @@ vee('{{10+20*30}}')({}) === '610';
 ### Value Extraction
 
 ```typescript
-vee('{{foo.bar}}')({ foo: { bar: 'result' } }) === 'result';
+vee('{{foo.bar}}')({
+  variables: { foo: { bar: 'result' } },
+}) === 'result';
+
+vee('{{foo["bar"]}}')({
+  variables: { foo: { bar: 'result' } },
+}) === 'result';
+```
+
+### Function Expression
+
+```typescript
+vee('{{fn("yoo","shi")}}')({
+  variables: {
+    fn: (...names: string[]) => 'Hello ' + names.join(', ') + '.',
+  },
+}) === 'Hello yoo, shi.';
+```
+
+### Pipe Function Expression
+
+```typescript
+vee('{{"yoo"|fn:"shi"}}')({
+  variables: {
+    fn: (...names: string[]) => 'Hello ' + names.join(', ') + '.',
+  },
+}) === 'Hello yoo, shi.';
 ```

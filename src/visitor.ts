@@ -1,4 +1,11 @@
-import { ExprContext, ProgContext, TextContext, VeeVisitor } from './grammar';
+import {
+  ArgsContext,
+  ExprContext,
+  PargsContext,
+  ProgContext,
+  TextContext,
+  VeeVisitor,
+} from './grammar';
 
 function numberWithCommas(x: string) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -76,6 +83,15 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
     super();
   }
 
+  extractValue(name: string, variables?: VeeVariable): VeeValueType {
+    let result = variables ?? this.options.variables;
+    for (const key of name.split('.')) {
+      result = result != null ? result[key] : undefined;
+    }
+
+    return result as any;
+  }
+
   convertValue(o1: VeeValueType): string {
     return o1.toString();
   }
@@ -148,12 +164,78 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
     }
   };
 
+  visitArgs: (ctx: ArgsContext) => VeeValueType = (ctx: ArgsContext) => {
+    const result: any[] = [];
+    for (let i = 0; i < ctx.getChildCount(); i += 2) {
+      result.push((ctx.getChild(i) as ExprContext).accept(this));
+    }
+    return result as any;
+  };
+
+  visitPargs: (ctx: PargsContext) => VeeValueType = (ctx: PargsContext) => {
+    const result: any[] = [];
+    for (let i = 1; i < ctx.getChildCount(); i += 2) {
+      result.push((ctx.getChild(i) as ExprContext).accept(this));
+    }
+    return result as any;
+  };
+
   visitExpr: (ctx: ExprContext) => VeeValueType = (ctx: ExprContext) => {
     if (ctx.NUM()) {
       return Number.parseFloat(ctx.getText());
     }
 
+    if (ctx.VAR() && ctx.getChildCount() === 1) {
+      return this.extractValue(ctx.getText());
+    }
+
+    if (ctx.STR()) {
+      const value = ctx.getText();
+      return value.substring(1, value.length - 1);
+    }
+
+    if (
+      ctx.getChildCount() >= 3 &&
+      ctx.getChild(1).getText() === '(' &&
+      ctx.getChild(ctx.getChildCount() - 1).getText() === ')'
+    ) {
+      const fnName = ctx.getChild(0).getText();
+      const args = [];
+      for (let i = 2; i + 1 < ctx.getChildCount(); i++) {
+        args.push(...((ctx.getChild(i) as ArgsContext).accept(this) as any));
+      }
+
+      const fn = this.extractValue(fnName as string) as any as Function;
+      return fn.apply(this.options.variables, args);
+    }
+
+    if (ctx.getChildCount() >= 3 && ctx.getChild(1).getText() === '|') {
+      const firstArgs = (ctx.getChild(0) as ExprContext).accept(this);
+      const fnName = ctx.getChild(2).getText();
+
+      const args = [firstArgs];
+
+      for (let i = 3; i < ctx.getChildCount(); i++) {
+        args.push(...((ctx.getChild(i) as PargsContext).accept(this) as any));
+      }
+
+      const fn = this.extractValue(fnName as string) as any as Function;
+      return fn.apply(this.options.variables, args);
+    }
+
     switch (ctx.getChildCount()) {
+      case 4:
+        if (
+          ctx.getChild(1).getText() === '[' &&
+          ctx.getChild(3).getText() === ']'
+        ) {
+          const base = (ctx.getChild(0) as ExprContext).accept(this);
+          const index = (ctx.getChild(2) as ExprContext).accept(this);
+
+          return this.extractValue(index.toString(), base as VeeVariable);
+        }
+        break;
+
       case 3:
         const separator = ctx.getChild(1).getText();
 
@@ -197,7 +279,7 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
 }
 
 export interface VariableVeeVisitorOptions {
-  variables: VeeVariable;
+  variables?: VeeVariable;
 }
 
 export interface VeeVariable {
