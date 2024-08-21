@@ -8,12 +8,12 @@ within your applications.
 
 ### Number Expression
 
-```
-vee('{{10+20*30}}')({}) === '610'
+```typescript
+vee('{{10+20*30}}')({}) === '610';
 ```
 
 ### Value Extraction
 
-```
-vee('{{foo.bar}}')({ foo: { bar: 'result' }}) === 'result'
+```typescript
+vee('{{foo.bar}}')({ foo: { bar: 'result' } }) === 'result';
 ```
