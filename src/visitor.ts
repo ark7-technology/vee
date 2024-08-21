@@ -1,3 +1,5 @@
+import * as fns from './functions';
+
 import {
   ArgsContext,
   ExprContext,
@@ -85,8 +87,14 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
 
   extractValue(name: string, variables?: VeeVariable): VeeValueType {
     let result = variables ?? this.options.variables;
+    let first: boolean = true;
     for (const key of name.split('.')) {
       result = result != null ? result[key] : undefined;
+
+      if (first && result === undefined) {
+        result = (fns as any)[key];
+        first = false;
+      }
     }
 
     return result as any;
@@ -220,7 +228,9 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
       }
 
       const fn = this.extractValue(fnName as string) as any as Function;
-      return fn.apply(this.options.variables, args);
+      return fn == null
+        ? `!UNKNOWN FUNCTION ${fnName}!`
+        : fn.apply(this.options.variables, args);
     }
 
     switch (ctx.getChildCount()) {
