@@ -1,10 +1,15 @@
 grammar Vee;		
-prog:	expr EOF ;
+prog:	text EOF ;
+text: '{{' expr '}}'
+    | (~'{')+ text
+    | text (~'}')+
+    | .*?
+    ;
 expr:	expr ('*'|'/') expr
     |	expr ('+'|'-') expr
-    |	INT
+    |	NUM
     |	'(' expr ')'
     ;
 NEWLINE : [\r\n]+ -> skip;
-INT     : [0-9]+ ;
+NUM     : [0-9]+ ;
 

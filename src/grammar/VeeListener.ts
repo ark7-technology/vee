@@ -4,6 +4,7 @@ import {ParseTreeListener} from "antlr4";
 
 
 import { ProgContext } from "./VeeParser.js";
+import { TextContext } from "./VeeParser.js";
 import { ExprContext } from "./VeeParser.js";
 
 
@@ -22,6 +23,16 @@ export default class VeeListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitProg?: (ctx: ProgContext) => void;
+	/**
+	 * Enter a parse tree produced by `VeeParser.text`.
+	 * @param ctx the parse tree
+	 */
+	enterText?: (ctx: TextContext) => void;
+	/**
+	 * Exit a parse tree produced by `VeeParser.text`.
+	 * @param ctx the parse tree
+	 */
+	exitText?: (ctx: TextContext) => void;
 	/**
 	 * Enter a parse tree produced by `VeeParser.expr`.
 	 * @param ctx the parse tree
