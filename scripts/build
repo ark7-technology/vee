@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+npm run clean
+
+antlr4 -Dlanguage=TypeScript -visitor src/grammar/Vee.g4
+
+rm -rf dist/
+
+npm run compile:src
