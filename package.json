@@ -2,12 +2,16 @@
   "name": "@ark7/vee",
   "version": "1.0.0",
   "description": "VEE (Value Evaluation Expression) is a lightweight and flexible expression evaluation engine designed for JSON-based data structures. With VEE, you can define custom expressions that evaluate results by feeding in JSON values, making it easy to implement dynamic logic, filtering, and data transformation within your applications.",
-  "types": "index.d.ts",
-  "main": "index.js",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "browser": "./dist/vee.mjs",
+  "module": "./dist/vee.mjs",
   "scripts": {
     "build": "scripts/build",
     "clean": "rm -rf dist",
     "compile:src": "tsc --build src/tsconfig.json",
+    "pack": "./node_modules/.bin/webpack",
+    "release": "scripts/release",
     "test": "npm run build && NODE_ENV=test TS_NODE_PROJECT='./test/tsconfig.json' node_modules/.bin/mocha --trace-warnings --require ts-node/register \"test/**/*.ts\""
   },
   "author": "yz@ark7.com",
@@ -21,6 +25,10 @@
     "@types/should": "^13.0.0",
     "mocha": "^10.7.3",
     "should": "^13.2.3",
-    "ts-node": "^10.9.2"
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4"
   }
 }

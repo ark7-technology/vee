@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+npm run build
+
+npm test
+
+npm run pack
+
+npm publish --access=public
