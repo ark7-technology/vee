@@ -8,6 +8,20 @@ describe('basic', () => {
     vee('{{10+20*30}}')().should.be.equals('610');
   });
 
+  it('can support text with variables', () => {
+    vee('Name {{date}} DONE')({
+      variables: { date: 'Jan 1, 2000' },
+    }).should.be.equals('Name Jan 1, 2000 DONE');
+
+    vee('Name{{date}} DONE')({
+      variables: { date: 'Jan 1, 2000' },
+    }).should.be.equals('NameJan 1, 2000 DONE');
+
+    vee('123{{date}} DONE~')({
+      variables: { date: 'Jan 1, 2000' },
+    }).should.be.equals('123Jan 1, 2000 DONE~');
+  });
+
   it('can process value extraction', () => {
     vee('{{foo.bar}}')({
       variables: { foo: { bar: 'result' } },

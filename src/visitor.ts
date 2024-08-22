@@ -5,6 +5,7 @@ import {
   ExprContext,
   PargsContext,
   ProgContext,
+  TextContentContext,
   TextContext,
   VeeVisitor,
 } from './grammar';
@@ -13,23 +14,35 @@ function numberWithCommas(x: string) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-export class FormatedValue {
+export class FormattedValue {
   constructor(public num: number, public format: string) {}
 
-  plus(o: VeeValueType): FormatedValue {
-    return new FormatedValue(this.num + FormatedValue.from(o).num, this.format);
+  plus(o: VeeValueType): FormattedValue {
+    return new FormattedValue(
+      this.num + FormattedValue.from(o).num,
+      this.format,
+    );
   }
 
-  minus(o: VeeValueType): FormatedValue {
-    return new FormatedValue(this.num - FormatedValue.from(o).num, this.format);
+  minus(o: VeeValueType): FormattedValue {
+    return new FormattedValue(
+      this.num - FormattedValue.from(o).num,
+      this.format,
+    );
   }
 
-  multiple(o: VeeValueType): FormatedValue {
-    return new FormatedValue(this.num * FormatedValue.from(o).num, this.format);
+  multiple(o: VeeValueType): FormattedValue {
+    return new FormattedValue(
+      this.num * FormattedValue.from(o).num,
+      this.format,
+    );
   }
 
-  divide(o: VeeValueType): FormatedValue {
-    return new FormatedValue(this.num / FormatedValue.from(o).num, this.format);
+  divide(o: VeeValueType): FormattedValue {
+    return new FormattedValue(
+      this.num / FormattedValue.from(o).num,
+      this.format,
+    );
   }
 
   toString() {
@@ -69,16 +82,16 @@ export class FormatedValue {
     }
   }
 
-  static from(o: VeeValueType): FormatedValue {
-    if (o instanceof FormatedValue) {
+  static from(o: VeeValueType): FormattedValue {
+    if (o instanceof FormattedValue) {
       return o;
     }
 
-    return new FormatedValue(Number.parseFloat(o as string), 'N:.0-4');
+    return new FormattedValue(Number.parseFloat(o as string), 'N:.0-4');
   }
 }
 
-export type VeeValueType = string | number | FormatedValue;
+export type VeeValueType = string | number | FormattedValue;
 
 export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
   constructor(public options: VariableVeeVisitorOptions) {
@@ -109,19 +122,19 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
   }
 
   plusValue(o1: VeeValueType, o2: VeeValueType): VeeValueType {
-    return FormatedValue.from(o1).plus(o2);
+    return FormattedValue.from(o1).plus(o2);
   }
 
   minusValue(o1: VeeValueType, o2: VeeValueType): VeeValueType {
-    return FormatedValue.from(o1).minus(o2);
+    return FormattedValue.from(o1).minus(o2);
   }
 
   multipleValue(o1: VeeValueType, o2: VeeValueType): VeeValueType {
-    return FormatedValue.from(o1).multiple(o2);
+    return FormattedValue.from(o1).multiple(o2);
   }
 
   divideValue(o1: VeeValueType, o2: VeeValueType): VeeValueType {
-    return FormatedValue.from(o1).divide(o2);
+    return FormattedValue.from(o1).divide(o2);
   }
 
   visitProg = (ctx: ProgContext) => {
@@ -139,37 +152,26 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
   };
 
   visitText: (ctx: TextContext) => VeeValueType = (ctx: TextContext) => {
-    switch (ctx.getChildCount()) {
-      case 3:
-        // {{ expr }}
+    return ctx.children
+      .map((c) =>
+        c instanceof TextContentContext ? c.accept(this) : c.getText(),
+      )
+      .join('');
+  };
 
-        if (
-          ctx.getChild(0).getText() === '{{' &&
-          ctx.getChild(2).getText() === '}}'
-        ) {
-          return (ctx.getChild(1) as ExprContext).accept(this);
-        } else {
-          return '!ERROR!';
-        }
-
-      case 2:
-        if (ctx.getChild(1) instanceof TextContext) {
-          return this.concatValue(
-            ctx.getChild(0).getText(),
-            (ctx.getChild(1) as TextContext).accept(this),
-          );
-        } else if (ctx.getChild(0) instanceof TextContext) {
-          return this.concatValue(
-            (ctx.getChild(0) as TextContext).accept(this),
-            ctx.getChild(1).getText(),
-          );
-        } else {
-          return '!ERROR!';
-        }
-
-      default:
-        return ctx.getText();
+  visitTextContent: (ctx: TextContentContext) => VeeValueType = (
+    ctx: TextContentContext,
+  ) => {
+    if (
+      ctx.getChildCount() === 3 &&
+      ctx.getChild(0).getText() === '{{' &&
+      ctx.getChild(2).getText() === '}}' &&
+      ctx.getChild(1) instanceof ExprContext
+    ) {
+      return (ctx.getChild(1) as ExprContext).accept(this);
     }
+
+    return ctx.children.map((c) => c.getText()).join('');
   };
 
   visitArgs: (ctx: ArgsContext) => VeeValueType = (ctx: ArgsContext) => {
@@ -284,7 +286,7 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
       default:
         break;
     }
-    return '!ERROR!' as VeeValueType;
+    return '!ERROR(Expr1)!' as VeeValueType;
   };
 }
 

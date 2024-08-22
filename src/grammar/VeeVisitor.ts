@@ -5,6 +5,7 @@ import {ParseTreeVisitor} from 'antlr4';
 
 import { ProgContext } from "./VeeParser.js";
 import { TextContext } from "./VeeParser.js";
+import { TextContentContext } from "./VeeParser.js";
 import { ArgsContext } from "./VeeParser.js";
 import { PargsContext } from "./VeeParser.js";
 import { ExprContext } from "./VeeParser.js";
@@ -30,6 +31,12 @@ export default class VeeVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitText?: (ctx: TextContext) => Result;
+	/**
+	 * Visit a parse tree produced by `VeeParser.textContent`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTextContent?: (ctx: TextContentContext) => Result;
 	/**
 	 * Visit a parse tree produced by `VeeParser.args`.
 	 * @param ctx the parse tree
