@@ -1,6 +1,6 @@
 {
   "name": "@ark7/vee",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "VEE (Value Evaluation Expression) is a lightweight and flexible expression evaluation engine designed for JSON-based data structures. With VEE, you can define custom expressions that evaluate results by feeding in JSON values, making it easy to implement dynamic logic, filtering, and data transformation within your applications.",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
