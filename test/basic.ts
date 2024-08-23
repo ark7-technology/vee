@@ -11,6 +11,10 @@ describe('basic', () => {
     vee('{{10+20*30}}', { log })().should.be.equals('610');
   });
 
+  // it('can process normal text', () => {
+  // vee(`I'm a good man.`, { log })().should.be.equals(`I'm a good man.`);
+  // });
+
   it('can support text with variables', () => {
     vee('Name {{date}} DONE', { log })({
       variables: { date: 'Jan 1, 2000' },
@@ -51,6 +55,18 @@ describe('basic', () => {
     }).should.be.equals('Hello yoo, shi.');
 
     vee('{{activity.seriesFormationDate|formatUtcDate:"standard"}}')({
+      variables: {
+        formatUtcDate: (date: Date, format: string) =>
+          date.toString() + ' ' + format,
+        activity: {
+          seriesFormationDate: new Date(2000, 1, 1),
+        },
+      },
+    }).should.be.equals(
+      'Tue Feb 01 2000 00:00:00 GMT-0800 (Pacific Standard Time) standard',
+    );
+
+    vee(`{{activity.seriesFormationDate|formatUtcDate:'standard'}}`)({
       variables: {
         formatUtcDate: (date: Date, format: string) =>
           date.toString() + ' ' + format,

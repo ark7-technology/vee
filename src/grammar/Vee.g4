@@ -28,15 +28,16 @@ expr:	expr ('*'|'/') expr
     |	'(' expr ')'
     ;
 
-PLUS    : '+';
-MINUS   : '-';
-MULTI   : '*';
-DIV     : '/';
-NEWLINE : [\r\n]+ -> skip;
+PLUS    : '+' ;
+MINUS   : '-' ;
+MULTI   : '*' ;
+DIV     : '/' ;
+SQ      : '\'' ;
+NEWLINE : [\r\n]+ -> skip ;
 NUM     : [0-9.]+ ;
 VAR     : [a-zA-Z][a-zA-Z0-9.]* ;
 STR     : UnterminatedStringLiteral '"'
-        | '\'' UnterminatedStringLiteralSingleQuote;
+        | UnterminatedStringLiteralSingleQuote '\'' ;
 OTHERS  : ~[0-9a-zA-Z{}:|()[\]'"]+ ;
 
 
