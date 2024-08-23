@@ -3,13 +3,16 @@ import 'should';
 import { vee } from '../src';
 
 describe('basic', () => {
+  const log = false;
+
   it('can process number expression', () => {
-    vee('10+20*30')().should.be.equals('10+20*30');
-    vee('{{10+20*30}}')().should.be.equals('610');
+    vee('+', { log })().should.be.equals('+');
+    vee('10+20*30', { log })().should.be.equals('10+20*30');
+    vee('{{10+20*30}}', { log })().should.be.equals('610');
   });
 
   it('can support text with variables', () => {
-    vee('Name {{date}} DONE')({
+    vee('Name {{date}} DONE', { log })({
       variables: { date: 'Jan 1, 2000' },
     }).should.be.equals('Name Jan 1, 2000 DONE');
 
@@ -46,5 +49,17 @@ describe('basic', () => {
         fn: (...names: string[]) => 'Hello ' + names.join(', ') + '.',
       },
     }).should.be.equals('Hello yoo, shi.');
+
+    vee('{{activity.seriesFormationDate|formatUtcDate:"standard"}}')({
+      variables: {
+        formatUtcDate: (date: Date, format: string) =>
+          date.toString() + ' ' + format,
+        activity: {
+          seriesFormationDate: new Date(2000, 1, 1),
+        },
+      },
+    }).should.be.equals(
+      'Tue Feb 01 2000 00:00:00 GMT-0800 (Pacific Standard Time) standard',
+    );
   });
 });

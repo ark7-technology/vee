@@ -28,16 +28,17 @@ export default class VeeParser extends Parser {
 	public static readonly T__6 = 7;
 	public static readonly T__7 = 8;
 	public static readonly T__8 = 9;
-	public static readonly T__9 = 10;
-	public static readonly T__10 = 11;
-	public static readonly T__11 = 12;
-	public static readonly T__12 = 13;
+	public static readonly PLUS = 10;
+	public static readonly MINUS = 11;
+	public static readonly MULTI = 12;
+	public static readonly DIV = 13;
 	public static readonly NEWLINE = 14;
 	public static readonly NUM = 15;
 	public static readonly VAR = 16;
 	public static readonly STR = 17;
-	public static readonly WORDS = 18;
+	public static readonly OTHERS = 18;
 	public static readonly UnterminatedStringLiteral = 19;
+	public static readonly UnterminatedStringLiteralSingleQuote = 20;
 	public static override readonly EOF = Token.EOF;
 	public static readonly RULE_prog = 0;
 	public static readonly RULE_text = 1;
@@ -47,22 +48,23 @@ export default class VeeParser extends Parser {
 	public static readonly RULE_expr = 5;
 	public static readonly literalNames: (string | null)[] = [ null, "'{{'", 
                                                             "'}}'", "','", 
-                                                            "':'", "'*'", 
-                                                            "'/'", "'+'", 
-                                                            "'-'", "'['", 
+                                                            "':'", "'['", 
                                                             "']'", "'|'", 
-                                                            "'('", "')'" ];
+                                                            "'('", "')'", 
+                                                            "'+'", "'-'", 
+                                                            "'*'", "'/'" ];
 	public static readonly symbolicNames: (string | null)[] = [ null, null, 
                                                              null, null, 
                                                              null, null, 
                                                              null, null, 
                                                              null, null, 
-                                                             null, null, 
-                                                             null, null, 
+                                                             "PLUS", "MINUS", 
+                                                             "MULTI", "DIV", 
                                                              "NEWLINE", 
                                                              "NUM", "VAR", 
-                                                             "STR", "WORDS", 
-                                                             "UnterminatedStringLiteral" ];
+                                                             "STR", "OTHERS", 
+                                                             "UnterminatedStringLiteral", 
+                                                             "UnterminatedStringLiteralSingleQuote" ];
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
 		"prog", "text", "textContent", "args", "pargs", "expr",
@@ -119,7 +121,7 @@ export default class VeeParser extends Parser {
 			this.state = 18;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 491522) !== 0)) {
+			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 506882) !== 0)) {
 				{
 				{
 				this.state = 15;
@@ -151,7 +153,7 @@ export default class VeeParser extends Parser {
 		let localctx: TextContentContext = new TextContentContext(this, this._ctx, this.state);
 		this.enterRule(localctx, 4, VeeParser.RULE_textContent);
 		try {
-			this.state = 29;
+			this.state = 33;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case 1:
@@ -186,11 +188,39 @@ export default class VeeParser extends Parser {
 				this.match(VeeParser.STR);
 				}
 				break;
-			case 18:
+			case 10:
 				this.enterOuterAlt(localctx, 5);
 				{
 				this.state = 28;
-				this.match(VeeParser.WORDS);
+				this.match(VeeParser.PLUS);
+				}
+				break;
+			case 11:
+				this.enterOuterAlt(localctx, 6);
+				{
+				this.state = 29;
+				this.match(VeeParser.MINUS);
+				}
+				break;
+			case 12:
+				this.enterOuterAlt(localctx, 7);
+				{
+				this.state = 30;
+				this.match(VeeParser.MULTI);
+				}
+				break;
+			case 13:
+				this.enterOuterAlt(localctx, 8);
+				{
+				this.state = 31;
+				this.match(VeeParser.DIV);
+				}
+				break;
+			case 18:
+				this.enterOuterAlt(localctx, 9);
+				{
+				this.state = 32;
+				this.match(VeeParser.OTHERS);
 				}
 				break;
 			default:
@@ -219,21 +249,21 @@ export default class VeeParser extends Parser {
 		try {
 			this.enterOuterAlt(localctx, 1);
 			{
-			this.state = 31;
+			this.state = 35;
 			this.expr(0);
-			this.state = 36;
+			this.state = 40;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la===3) {
 				{
 				{
-				this.state = 32;
+				this.state = 36;
 				this.match(VeeParser.T__2);
-				this.state = 33;
+				this.state = 37;
 				this.expr(0);
 				}
 				}
-				this.state = 38;
+				this.state = 42;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -261,21 +291,21 @@ export default class VeeParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(localctx, 1);
 			{
-			this.state = 43;
+			this.state = 47;
 			this._errHandler.sync(this);
 			_alt = this._interp.adaptivePredict(this._input, 3, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 39;
+					this.state = 43;
 					this.match(VeeParser.T__3);
-					this.state = 40;
+					this.state = 44;
 					this.expr(0);
 					}
 					}
 				}
-				this.state = 45;
+				this.state = 49;
 				this._errHandler.sync(this);
 				_alt = this._interp.adaptivePredict(this._input, 3, this._ctx);
 			}
@@ -315,60 +345,60 @@ export default class VeeParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(localctx, 1);
 			{
-			this.state = 60;
+			this.state = 64;
 			this._errHandler.sync(this);
 			switch ( this._interp.adaptivePredict(this._input, 5, this._ctx) ) {
 			case 1:
 				{
-				this.state = 47;
+				this.state = 51;
 				this.match(VeeParser.NUM);
 				}
 				break;
 			case 2:
 				{
-				this.state = 48;
+				this.state = 52;
 				this.match(VeeParser.VAR);
 				}
 				break;
 			case 3:
 				{
-				this.state = 49;
+				this.state = 53;
 				this.match(VeeParser.STR);
 				}
 				break;
 			case 4:
 				{
-				this.state = 50;
+				this.state = 54;
 				this.match(VeeParser.VAR);
-				this.state = 51;
-				this.match(VeeParser.T__11);
-				this.state = 53;
+				this.state = 55;
+				this.match(VeeParser.T__7);
+				this.state = 57;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if ((((_la) & ~0x1F) === 0 && ((1 << _la) & 233472) !== 0)) {
+				if ((((_la) & ~0x1F) === 0 && ((1 << _la) & 229632) !== 0)) {
 					{
-					this.state = 52;
+					this.state = 56;
 					this.args();
 					}
 				}
 
-				this.state = 55;
-				this.match(VeeParser.T__12);
+				this.state = 59;
+				this.match(VeeParser.T__8);
 				}
 				break;
 			case 5:
 				{
-				this.state = 56;
-				this.match(VeeParser.T__11);
-				this.state = 57;
+				this.state = 60;
+				this.match(VeeParser.T__7);
+				this.state = 61;
 				this.expr(0);
-				this.state = 58;
-				this.match(VeeParser.T__12);
+				this.state = 62;
+				this.match(VeeParser.T__8);
 				}
 				break;
 			}
 			this._ctx.stop = this._input.LT(-1);
-			this.state = 79;
+			this.state = 83;
 			this._errHandler.sync(this);
 			_alt = this._interp.adaptivePredict(this._input, 7, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
@@ -378,27 +408,27 @@ export default class VeeParser extends Parser {
 					}
 					_prevctx = localctx;
 					{
-					this.state = 77;
+					this.state = 81;
 					this._errHandler.sync(this);
 					switch ( this._interp.adaptivePredict(this._input, 6, this._ctx) ) {
 					case 1:
 						{
 						localctx = new ExprContext(this, _parentctx, _parentState);
 						this.pushNewRecursionContext(localctx, _startState, VeeParser.RULE_expr);
-						this.state = 62;
+						this.state = 66;
 						if (!(this.precpred(this._ctx, 9))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 9)");
 						}
-						this.state = 63;
+						this.state = 67;
 						_la = this._input.LA(1);
-						if(!(_la===5 || _la===6)) {
+						if(!(_la===12 || _la===13)) {
 						this._errHandler.recoverInline(this);
 						}
 						else {
 							this._errHandler.reportMatch(this);
 						    this.consume();
 						}
-						this.state = 64;
+						this.state = 68;
 						this.expr(10);
 						}
 						break;
@@ -406,20 +436,20 @@ export default class VeeParser extends Parser {
 						{
 						localctx = new ExprContext(this, _parentctx, _parentState);
 						this.pushNewRecursionContext(localctx, _startState, VeeParser.RULE_expr);
-						this.state = 65;
+						this.state = 69;
 						if (!(this.precpred(this._ctx, 8))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 8)");
 						}
-						this.state = 66;
+						this.state = 70;
 						_la = this._input.LA(1);
-						if(!(_la===7 || _la===8)) {
+						if(!(_la===10 || _la===11)) {
 						this._errHandler.recoverInline(this);
 						}
 						else {
 							this._errHandler.reportMatch(this);
 						    this.consume();
 						}
-						this.state = 67;
+						this.state = 71;
 						this.expr(9);
 						}
 						break;
@@ -427,38 +457,38 @@ export default class VeeParser extends Parser {
 						{
 						localctx = new ExprContext(this, _parentctx, _parentState);
 						this.pushNewRecursionContext(localctx, _startState, VeeParser.RULE_expr);
-						this.state = 68;
+						this.state = 72;
 						if (!(this.precpred(this._ctx, 7))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 7)");
 						}
-						this.state = 69;
-						this.match(VeeParser.T__8);
-						this.state = 70;
+						this.state = 73;
+						this.match(VeeParser.T__4);
+						this.state = 74;
 						this.expr(0);
-						this.state = 71;
-						this.match(VeeParser.T__9);
+						this.state = 75;
+						this.match(VeeParser.T__5);
 						}
 						break;
 					case 4:
 						{
 						localctx = new ExprContext(this, _parentctx, _parentState);
 						this.pushNewRecursionContext(localctx, _startState, VeeParser.RULE_expr);
-						this.state = 73;
+						this.state = 77;
 						if (!(this.precpred(this._ctx, 6))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 6)");
 						}
-						this.state = 74;
-						this.match(VeeParser.T__10);
-						this.state = 75;
+						this.state = 78;
+						this.match(VeeParser.T__6);
+						this.state = 79;
 						this.match(VeeParser.VAR);
-						this.state = 76;
+						this.state = 80;
 						this.pargs();
 						}
 						break;
 					}
 					}
 				}
-				this.state = 81;
+				this.state = 85;
 				this._errHandler.sync(this);
 				_alt = this._interp.adaptivePredict(this._input, 7, this._ctx);
 			}
@@ -500,32 +530,34 @@ export default class VeeParser extends Parser {
 		return true;
 	}
 
-	public static readonly _serializedATN: number[] = [4,1,19,83,2,0,7,0,2,
+	public static readonly _serializedATN: number[] = [4,1,20,87,2,0,7,0,2,
 	1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,1,0,1,0,1,1,5,1,17,8,1,10,1,12,
-	1,20,9,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,30,8,2,1,3,1,3,1,3,5,3,35,
-	8,3,10,3,12,3,38,9,3,1,4,1,4,5,4,42,8,4,10,4,12,4,45,9,4,1,5,1,5,1,5,1,
-	5,1,5,1,5,1,5,3,5,54,8,5,1,5,1,5,1,5,1,5,1,5,3,5,61,8,5,1,5,1,5,1,5,1,5,
-	1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,5,78,8,5,10,5,12,5,81,9,5,
-	1,5,0,1,10,6,0,2,4,6,8,10,0,2,1,0,5,6,1,0,7,8,92,0,12,1,0,0,0,2,18,1,0,
-	0,0,4,29,1,0,0,0,6,31,1,0,0,0,8,43,1,0,0,0,10,60,1,0,0,0,12,13,3,2,1,0,
-	13,14,5,0,0,1,14,1,1,0,0,0,15,17,3,4,2,0,16,15,1,0,0,0,17,20,1,0,0,0,18,
-	16,1,0,0,0,18,19,1,0,0,0,19,3,1,0,0,0,20,18,1,0,0,0,21,22,5,1,0,0,22,23,
-	3,10,5,0,23,24,5,2,0,0,24,30,1,0,0,0,25,30,5,16,0,0,26,30,5,15,0,0,27,30,
-	5,17,0,0,28,30,5,18,0,0,29,21,1,0,0,0,29,25,1,0,0,0,29,26,1,0,0,0,29,27,
-	1,0,0,0,29,28,1,0,0,0,30,5,1,0,0,0,31,36,3,10,5,0,32,33,5,3,0,0,33,35,3,
-	10,5,0,34,32,1,0,0,0,35,38,1,0,0,0,36,34,1,0,0,0,36,37,1,0,0,0,37,7,1,0,
-	0,0,38,36,1,0,0,0,39,40,5,4,0,0,40,42,3,10,5,0,41,39,1,0,0,0,42,45,1,0,
-	0,0,43,41,1,0,0,0,43,44,1,0,0,0,44,9,1,0,0,0,45,43,1,0,0,0,46,47,6,5,-1,
-	0,47,61,5,15,0,0,48,61,5,16,0,0,49,61,5,17,0,0,50,51,5,16,0,0,51,53,5,12,
-	0,0,52,54,3,6,3,0,53,52,1,0,0,0,53,54,1,0,0,0,54,55,1,0,0,0,55,61,5,13,
-	0,0,56,57,5,12,0,0,57,58,3,10,5,0,58,59,5,13,0,0,59,61,1,0,0,0,60,46,1,
-	0,0,0,60,48,1,0,0,0,60,49,1,0,0,0,60,50,1,0,0,0,60,56,1,0,0,0,61,79,1,0,
-	0,0,62,63,10,9,0,0,63,64,7,0,0,0,64,78,3,10,5,10,65,66,10,8,0,0,66,67,7,
-	1,0,0,67,78,3,10,5,9,68,69,10,7,0,0,69,70,5,9,0,0,70,71,3,10,5,0,71,72,
-	5,10,0,0,72,78,1,0,0,0,73,74,10,6,0,0,74,75,5,11,0,0,75,76,5,16,0,0,76,
-	78,3,8,4,0,77,62,1,0,0,0,77,65,1,0,0,0,77,68,1,0,0,0,77,73,1,0,0,0,78,81,
-	1,0,0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,11,1,0,0,0,81,79,1,0,0,0,8,18,29,
-	36,43,53,60,77,79];
+	1,20,9,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,34,8,2,1,3,
+	1,3,1,3,5,3,39,8,3,10,3,12,3,42,9,3,1,4,1,4,5,4,46,8,4,10,4,12,4,49,9,4,
+	1,5,1,5,1,5,1,5,1,5,1,5,1,5,3,5,58,8,5,1,5,1,5,1,5,1,5,1,5,3,5,65,8,5,1,
+	5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,5,82,8,5,10,
+	5,12,5,85,9,5,1,5,0,1,10,6,0,2,4,6,8,10,0,2,1,0,12,13,1,0,10,11,100,0,12,
+	1,0,0,0,2,18,1,0,0,0,4,33,1,0,0,0,6,35,1,0,0,0,8,47,1,0,0,0,10,64,1,0,0,
+	0,12,13,3,2,1,0,13,14,5,0,0,1,14,1,1,0,0,0,15,17,3,4,2,0,16,15,1,0,0,0,
+	17,20,1,0,0,0,18,16,1,0,0,0,18,19,1,0,0,0,19,3,1,0,0,0,20,18,1,0,0,0,21,
+	22,5,1,0,0,22,23,3,10,5,0,23,24,5,2,0,0,24,34,1,0,0,0,25,34,5,16,0,0,26,
+	34,5,15,0,0,27,34,5,17,0,0,28,34,5,10,0,0,29,34,5,11,0,0,30,34,5,12,0,0,
+	31,34,5,13,0,0,32,34,5,18,0,0,33,21,1,0,0,0,33,25,1,0,0,0,33,26,1,0,0,0,
+	33,27,1,0,0,0,33,28,1,0,0,0,33,29,1,0,0,0,33,30,1,0,0,0,33,31,1,0,0,0,33,
+	32,1,0,0,0,34,5,1,0,0,0,35,40,3,10,5,0,36,37,5,3,0,0,37,39,3,10,5,0,38,
+	36,1,0,0,0,39,42,1,0,0,0,40,38,1,0,0,0,40,41,1,0,0,0,41,7,1,0,0,0,42,40,
+	1,0,0,0,43,44,5,4,0,0,44,46,3,10,5,0,45,43,1,0,0,0,46,49,1,0,0,0,47,45,
+	1,0,0,0,47,48,1,0,0,0,48,9,1,0,0,0,49,47,1,0,0,0,50,51,6,5,-1,0,51,65,5,
+	15,0,0,52,65,5,16,0,0,53,65,5,17,0,0,54,55,5,16,0,0,55,57,5,8,0,0,56,58,
+	3,6,3,0,57,56,1,0,0,0,57,58,1,0,0,0,58,59,1,0,0,0,59,65,5,9,0,0,60,61,5,
+	8,0,0,61,62,3,10,5,0,62,63,5,9,0,0,63,65,1,0,0,0,64,50,1,0,0,0,64,52,1,
+	0,0,0,64,53,1,0,0,0,64,54,1,0,0,0,64,60,1,0,0,0,65,83,1,0,0,0,66,67,10,
+	9,0,0,67,68,7,0,0,0,68,82,3,10,5,10,69,70,10,8,0,0,70,71,7,1,0,0,71,82,
+	3,10,5,9,72,73,10,7,0,0,73,74,5,5,0,0,74,75,3,10,5,0,75,76,5,6,0,0,76,82,
+	1,0,0,0,77,78,10,6,0,0,78,79,5,7,0,0,79,80,5,16,0,0,80,82,3,8,4,0,81,66,
+	1,0,0,0,81,69,1,0,0,0,81,72,1,0,0,0,81,77,1,0,0,0,82,85,1,0,0,0,83,81,1,
+	0,0,0,83,84,1,0,0,0,84,11,1,0,0,0,85,83,1,0,0,0,8,18,33,40,47,57,64,81,
+	83];
 
 	private static __ATN: ATN;
 	public static get _ATN(): ATN {
@@ -628,8 +660,20 @@ export class TextContentContext extends ParserRuleContext {
 	public STR(): TerminalNode {
 		return this.getToken(VeeParser.STR, 0);
 	}
-	public WORDS(): TerminalNode {
-		return this.getToken(VeeParser.WORDS, 0);
+	public PLUS(): TerminalNode {
+		return this.getToken(VeeParser.PLUS, 0);
+	}
+	public MINUS(): TerminalNode {
+		return this.getToken(VeeParser.MINUS, 0);
+	}
+	public MULTI(): TerminalNode {
+		return this.getToken(VeeParser.MULTI, 0);
+	}
+	public DIV(): TerminalNode {
+		return this.getToken(VeeParser.DIV, 0);
+	}
+	public OTHERS(): TerminalNode {
+		return this.getToken(VeeParser.OTHERS, 0);
 	}
     public get ruleIndex(): number {
     	return VeeParser.RULE_textContent;
@@ -747,6 +791,18 @@ export class ExprContext extends ParserRuleContext {
 	}
 	public expr(i: number): ExprContext {
 		return this.getTypedRuleContext(ExprContext, i) as ExprContext;
+	}
+	public MULTI(): TerminalNode {
+		return this.getToken(VeeParser.MULTI, 0);
+	}
+	public DIV(): TerminalNode {
+		return this.getToken(VeeParser.DIV, 0);
+	}
+	public PLUS(): TerminalNode {
+		return this.getToken(VeeParser.PLUS, 0);
+	}
+	public MINUS(): TerminalNode {
+		return this.getToken(VeeParser.MINUS, 0);
 	}
 	public pargs(): PargsContext {
 		return this.getTypedRuleContext(PargsContext, 0) as PargsContext;

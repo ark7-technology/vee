@@ -8,7 +8,7 @@ export * from './grammar';
 
 export function vee(
   expr: string,
-  _options: VeeOptions = {},
+  veeOptions: VeeOptions = {},
 ): (options?: VariableVeeVisitorOptions) => string {
   const chars = new CharStream(expr);
   const lexer = new VeeLexer(chars);
@@ -17,8 +17,17 @@ export function vee(
   const tree = parser.prog();
 
   return (options: VariableVeeVisitorOptions = {}) => {
-    return tree.accept(new VariableVeeVisitor(options)).toString();
+    return tree
+      .accept(
+        new VariableVeeVisitor({
+          variables: options.variables,
+          log: veeOptions.log,
+        }),
+      )
+      .toString();
   };
 }
 
-export interface VeeOptions {}
+export interface VeeOptions {
+  log?: boolean;
+}

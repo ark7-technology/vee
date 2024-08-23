@@ -152,6 +152,10 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
   };
 
   visitText: (ctx: TextContext) => VeeValueType = (ctx: TextContext) => {
+    if (this.options.log) {
+      console.log(`text(${ctx.getText()})(childs=${ctx.getChildCount()})`);
+    }
+
     return ctx.children
       .map((c) =>
         c instanceof TextContentContext ? c.accept(this) : c.getText(),
@@ -162,6 +166,14 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
   visitTextContent: (ctx: TextContentContext) => VeeValueType = (
     ctx: TextContentContext,
   ) => {
+    if (this.options.log) {
+      console.log(
+        `textContent(${ctx.getText()})(childs=${ctx.getChildCount()}, ruleIndex=${
+          ctx.ruleIndex
+        })`,
+      );
+    }
+
     if (
       ctx.getChildCount() === 3 &&
       ctx.getChild(0).getText() === '{{' &&
@@ -292,6 +304,7 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
 
 export interface VariableVeeVisitorOptions {
   variables?: VeeVariable;
+  log?: boolean;
 }
 
 export interface VeeVariable {
