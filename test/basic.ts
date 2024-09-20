@@ -9,6 +9,7 @@ describe('basic', () => {
     vee('+', { log })().should.be.equals('+');
     vee('10+20*30', { log })().should.be.equals('10+20*30');
     vee('{{10+20*30}}', { log })().should.be.equals('610');
+    vee('(415)275-0701', { log })().should.be.equals('(415)275-0701');
   });
 
   // it('can process normal text', () => {

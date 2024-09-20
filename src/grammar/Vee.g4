@@ -5,6 +5,8 @@ prog:	text EOF ;
 text: textContent* ;
 
 textContent : '{{' expr '}}'
+            | LB
+            | RB
             | VAR
             | NUM
             | STR
@@ -33,6 +35,8 @@ MINUS   : '-' ;
 MULTI   : '*' ;
 DIV     : '/' ;
 SQ      : '\'' ;
+LB      : '(' ;
+RB      : ')' ;
 NEWLINE : [\r\n]+ -> skip ;
 NUM     : [0-9.]+ ;
 VAR     : [a-zA-Z][a-zA-Z0-9.]* ;

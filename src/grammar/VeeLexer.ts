@@ -19,13 +19,13 @@ export default class VeeLexer extends Lexer {
 	public static readonly T__4 = 5;
 	public static readonly T__5 = 6;
 	public static readonly T__6 = 7;
-	public static readonly T__7 = 8;
-	public static readonly T__8 = 9;
-	public static readonly PLUS = 10;
-	public static readonly MINUS = 11;
-	public static readonly MULTI = 12;
-	public static readonly DIV = 13;
-	public static readonly SQ = 14;
+	public static readonly PLUS = 8;
+	public static readonly MINUS = 9;
+	public static readonly MULTI = 10;
+	public static readonly DIV = 11;
+	public static readonly SQ = 12;
+	public static readonly LB = 13;
+	public static readonly RB = 14;
 	public static readonly NEWLINE = 15;
 	public static readonly NUM = 16;
 	public static readonly VAR = 17;
@@ -39,27 +39,27 @@ export default class VeeLexer extends Lexer {
                                                             "'}}'", "','", 
                                                             "':'", "'['", 
                                                             "']'", "'|'", 
-                                                            "'('", "')'", 
                                                             "'+'", "'-'", 
                                                             "'*'", "'/'", 
-                                                            "'''" ];
+                                                            "'''", "'('", 
+                                                            "')'" ];
 	public static readonly symbolicNames: (string | null)[] = [ null, null, 
-                                                             null, null, 
                                                              null, null, 
                                                              null, null, 
                                                              null, null, 
                                                              "PLUS", "MINUS", 
                                                              "MULTI", "DIV", 
-                                                             "SQ", "NEWLINE", 
+                                                             "SQ", "LB", 
+                                                             "RB", "NEWLINE", 
                                                              "NUM", "VAR", 
                                                              "STR", "OTHERS", 
                                                              "UnterminatedStringLiteralSingleQuote" ];
 	public static readonly modeNames: string[] = [ "DEFAULT_MODE", ];
 
 	public static readonly ruleNames: string[] = [
-		"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8", 
-		"PLUS", "MINUS", "MULTI", "DIV", "SQ", "NEWLINE", "NUM", "VAR", "STR", 
-		"OTHERS", "UnterminatedStringLiteralSingleQuote",
+		"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "PLUS", "MINUS", 
+		"MULTI", "DIV", "SQ", "LB", "RB", "NEWLINE", "NUM", "VAR", "STR", "OTHERS", 
+		"UnterminatedStringLiteralSingleQuote",
 	];
 
 
@@ -104,10 +104,10 @@ export default class VeeLexer extends Lexer {
 	1,0,0,0,37,109,1,0,0,0,39,113,1,0,0,0,41,42,5,123,0,0,42,43,5,123,0,0,43,
 	2,1,0,0,0,44,45,5,125,0,0,45,46,5,125,0,0,46,4,1,0,0,0,47,48,5,44,0,0,48,
 	6,1,0,0,0,49,50,5,58,0,0,50,8,1,0,0,0,51,52,5,91,0,0,52,10,1,0,0,0,53,54,
-	5,93,0,0,54,12,1,0,0,0,55,56,5,124,0,0,56,14,1,0,0,0,57,58,5,40,0,0,58,
-	16,1,0,0,0,59,60,5,41,0,0,60,18,1,0,0,0,61,62,5,43,0,0,62,20,1,0,0,0,63,
-	64,5,45,0,0,64,22,1,0,0,0,65,66,5,42,0,0,66,24,1,0,0,0,67,68,5,47,0,0,68,
-	26,1,0,0,0,69,70,5,39,0,0,70,28,1,0,0,0,71,73,7,0,0,0,72,71,1,0,0,0,73,
+	5,93,0,0,54,12,1,0,0,0,55,56,5,124,0,0,56,14,1,0,0,0,57,58,5,43,0,0,58,
+	16,1,0,0,0,59,60,5,45,0,0,60,18,1,0,0,0,61,62,5,42,0,0,62,20,1,0,0,0,63,
+	64,5,47,0,0,64,22,1,0,0,0,65,66,5,39,0,0,66,24,1,0,0,0,67,68,5,40,0,0,68,
+	26,1,0,0,0,69,70,5,41,0,0,70,28,1,0,0,0,71,73,7,0,0,0,72,71,1,0,0,0,73,
 	74,1,0,0,0,74,72,1,0,0,0,74,75,1,0,0,0,75,76,1,0,0,0,76,77,6,14,0,0,77,
 	30,1,0,0,0,78,80,7,1,0,0,79,78,1,0,0,0,80,81,1,0,0,0,81,79,1,0,0,0,81,82,
 	1,0,0,0,82,32,1,0,0,0,83,87,7,2,0,0,84,86,7,3,0,0,85,84,1,0,0,0,86,89,1,
