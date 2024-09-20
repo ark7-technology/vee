@@ -36,14 +36,10 @@ SQ      : '\'' ;
 NEWLINE : [\r\n]+ -> skip ;
 NUM     : [0-9.]+ ;
 VAR     : [a-zA-Z][a-zA-Z0-9.]* ;
-STR     : UnterminatedStringLiteral '"'
+STR     : '"' (~["\\\r\n] | '\\' (. | EOF))* '"'
         | UnterminatedStringLiteralSingleQuote '\'' ;
 OTHERS  : ~[0-9a-zA-Z{}:|()[\]'"]+ ;
 
-
-UnterminatedStringLiteral
-  : '"' (~["\\\r\n] | '\\' (. | EOF))*
-  ;
 
 UnterminatedStringLiteralSingleQuote
   : '\'' (~['\\\r\n] | '\\' (. | EOF))*

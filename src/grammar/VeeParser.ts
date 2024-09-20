@@ -38,8 +38,7 @@ export default class VeeParser extends Parser {
 	public static readonly VAR = 17;
 	public static readonly STR = 18;
 	public static readonly OTHERS = 19;
-	public static readonly UnterminatedStringLiteral = 20;
-	public static readonly UnterminatedStringLiteralSingleQuote = 21;
+	public static readonly UnterminatedStringLiteralSingleQuote = 20;
 	public static override readonly EOF = Token.EOF;
 	public static readonly RULE_prog = 0;
 	public static readonly RULE_text = 1;
@@ -65,7 +64,6 @@ export default class VeeParser extends Parser {
                                                              "SQ", "NEWLINE", 
                                                              "NUM", "VAR", 
                                                              "STR", "OTHERS", 
-                                                             "UnterminatedStringLiteral", 
                                                              "UnterminatedStringLiteralSingleQuote" ];
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
@@ -532,7 +530,7 @@ export default class VeeParser extends Parser {
 		return true;
 	}
 
-	public static readonly _serializedATN: number[] = [4,1,21,87,2,0,7,0,2,
+	public static readonly _serializedATN: number[] = [4,1,20,87,2,0,7,0,2,
 	1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,1,0,1,0,1,1,5,1,17,8,1,10,1,12,
 	1,20,9,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,34,8,2,1,3,
 	1,3,1,3,5,3,39,8,3,10,3,12,3,42,9,3,1,4,1,4,5,4,46,8,4,10,4,12,4,49,9,4,

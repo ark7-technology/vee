@@ -99,7 +99,14 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
   }
 
   extractValue(name: string, variables?: VeeVariable): VeeValueType {
-    let result = variables ?? this.options.variables;
+    let extractedVariables = variables ?? this.options.variables ?? {};
+    let extractedFunctions = this.options.functions ?? {};
+
+    let result = {
+      ...extractedVariables,
+      ...extractedFunctions,
+    };
+
     let first: boolean = true;
     for (const key of name.split('.')) {
       result = result != null ? result[key] : undefined;
@@ -303,10 +310,23 @@ export class VariableVeeVisitor extends VeeVisitor<VeeValueType> {
 }
 
 export interface VariableVeeVisitorOptions {
+  /**
+   * Pass-in the variables to extract out.
+   */
   variables?: VeeVariable;
+
+  /**
+   * Pass-in the functions to reference.
+   */
+  functions?: VeeFunctions;
+
   log?: boolean;
 }
 
 export interface VeeVariable {
   [key: string]: any;
+}
+
+export interface VeeFunctions {
+  [key: string]: Function;
 }

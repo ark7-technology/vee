@@ -1,10 +1,16 @@
 import './visitor';
 
 import { CharStream, CommonTokenStream } from 'antlr4';
-import { VariableVeeVisitor, VariableVeeVisitorOptions } from './visitor';
+import {
+  VariableVeeVisitor,
+  VariableVeeVisitorOptions,
+  VeeFunctions,
+} from './visitor';
 import { VeeLexer, VeeParser } from './grammar';
 
 export * from './grammar';
+
+var globalOptions: VeeGlobalOptions = {};
 
 export function vee(
   expr: string,
@@ -21,6 +27,10 @@ export function vee(
       .accept(
         new VariableVeeVisitor({
           variables: options.variables,
+          functions: {
+            ...globalOptions.functions,
+            ...options.functions,
+          },
           log: veeOptions.log,
         }),
       )
@@ -30,4 +40,23 @@ export function vee(
 
 export interface VeeOptions {
   log?: boolean;
+}
+
+/**
+ * Setup for Vee's global options.
+ *
+ * @params options.functions -
+ */
+export function SetupVee(options: VeeGlobalOptions) {
+  globalOptions.functions = {
+    ...globalOptions.functions,
+    ...options.functions,
+  };
+}
+
+export interface VeeGlobalOptions {
+  /**
+   * The functions to provide.
+   */
+  functions?: VeeFunctions;
 }

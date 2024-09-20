@@ -56,3 +56,21 @@ It can convert the value to upper case.
 vee('{{"hello"|upper}}')().should.be.equals('HELLO');
 vee('{{123|upper}}')().should.be.equals('123');
 ```
+
+## Set Globals
+
+### global functions
+
+It can set global functions for convenient.
+
+```typescript
+SetupVee({
+  functions: {
+    globalFoo: (val: string) => `bar(${val})`,
+  },
+});
+
+vee('Name {{date|globalFoo}} DONE', { log })({
+  variables: { date: 'Jan 1, 2000' },
+}).should.be.equals('Name bar(Jan 1, 2000) DONE');
+```
