@@ -15,6 +15,16 @@ describe('functions', () => {
         vee('{{123|upper}}')().should.be.equals('123');
       });
     });
+
+    describe('dates', () => {
+      it('can convert to upper strings', () => {
+        vee('{{date|year}}')({
+          variables: {
+            date: new Date(2023, 0, 1),
+          },
+        }).should.be.equals('2023');
+      });
+    });
   });
 
   describe('user-defined functions', () => {
